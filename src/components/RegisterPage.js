@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { memberAction } from '../actions'
+
 class RegisterPage extends React.Component {
     constructor(props){
         super(props);
@@ -20,7 +22,15 @@ class RegisterPage extends React.Component {
     }
 
     onSubmit(e){
+        e.preventDefault();
+        this.setState({
+            submitted: true
+        });
 
+        const { memberId, password, name, gender, bornYear } = this.state;
+        if(memberId && password && name){
+            this.props.onSubmit(memberId, password, name, gender, bornYear);
+        }
     }
 
     onChange(e){
@@ -94,5 +104,11 @@ function mapStateToProps(state){
     }
 }
 
-RegisterPage = connect(mapStateToProps)(RegisterPage);
+function mapDispatchToProps(dispatch){
+    return {
+        onSubmit: (memberId, password, name, gender, bornYear) => dispatch(memberAction.register(memberId, password, name, gender, bornYear))
+    }
+}
+
+RegisterPage = connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
 export default RegisterPage;
