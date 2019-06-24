@@ -38,7 +38,7 @@ function login(playerId, password){
         .then(handleResponse)
         .then((result) => {
             if(result && result.player){
-                localStorage.setItem(helperConstant.LOCAL_STORATE_KEY, JSON.stringify(result.player));
+                localStorage.setItem(helperConstant.PLAYER_LOGIN_KEY, JSON.stringify(result.player));
                 return result;
             }
             return Promise.reject(result);
@@ -46,7 +46,7 @@ function login(playerId, password){
 }
 
 function logout(){
-    localStorage.removeItem(helperConstant.LOCAL_STORATE_KEY);
+    localStorage.removeItem(helperConstant.PLAYER_LOGIN_KEY);
 }
 
 function handleResponse(response){

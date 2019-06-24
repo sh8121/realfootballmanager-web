@@ -1,23 +1,23 @@
-import memberConstant from '../constants/memberConstant';
+import playerConstant from '../constants/playerConstant';
 import helperConstant from '../constants/helperConstant';
 
-const member = JSON.parse(localStorage.getItem(helperConstant.LOCAL_STORATE_KEY) || '{}');
-const authenticationInitial = member ? { loggedIn: true, member } : {};
+const player = JSON.parse(localStorage.getItem(helperConstant.PLAYER_LOGIN_KEY) || '{}');
+const authenticationInitial = player ? { loggedIn: true, player } : {};
 const registrationInitial = {};
 
 export function authentication(state = authenticationInitial, action){
     switch(action.type){
-        case memberConstant.LOGIN.REQUEST:
+        case playerConstant.LOGIN.REQUEST:
             return {
                 loggingIn: true
             };
-        case memberConstant.LOGIN.SUCCESS:
+        case playerConstant.LOGIN.SUCCESS:
             return {
                 loggedIn: true,
-                member: action.member
+                player: action.player
             };
-        case memberConstant.LOGIN.FAILURE:
-        case memberConstant.LOGOUT:
+        case playerConstant.LOGIN.FAILURE:
+        case playerConstant.LOGOUT:
             return {};
         default:
             return state;
@@ -26,12 +26,12 @@ export function authentication(state = authenticationInitial, action){
 
 export function registration(state = registrationInitial, action){
     switch(action.type){
-        case memberConstant.REGISTER.REQUEST:
+        case playerConstant.REGISTER.REQUEST:
             return {
                 registering: true
             };
-        case memberConstant.REGISTER.SUCCESS:
-        case memberConstant.REGISTER.FAILURE:
+        case playerConstant.REGISTER.SUCCESS:
+        case playerConstant.REGISTER.FAILURE:
             return {};
         default:
             return state;

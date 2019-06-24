@@ -1,3 +1,4 @@
 export default {
-    LOCAL_STORATE_KEY: 'loginInfo'
+    TEAM_LOGIN_KEY: 'teamInfo',
+    PLAYER_LOGIN_KEY: 'playerInfo'
 }

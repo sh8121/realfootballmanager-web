@@ -36,7 +36,7 @@ function login(teamId, password){
         .then(handleResponse)
         .then((result) => {
             if(result && result.team){
-                localStorage.setItem(helperConstant.LOCAL_STORATE_KEY, JSON.stringify(result.team));
+                localStorage.setItem(helperConstant.TEAM_LOGIN_KEY, JSON.stringify(result.team));
                 return result;
             }
             return Promise.reject(result);
@@ -44,7 +44,7 @@ function login(teamId, password){
 }
 
 function logout(){
-    localStorage.removeItem(helperConstant.LOCAL_STORATE_KEY);
+    localStorage.removeItem(helperConstant.TEAM_LOGIN_KEY);
 }
 
 function handleResponse(response){
