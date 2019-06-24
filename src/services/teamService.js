@@ -1,44 +1,42 @@
 import { apiUrl } from '../config';
 import helperConstant from '../constants/helperConstant';
 
-export const memberService = {
+export const teamService = {
     register,
     login,
     logout
 };
 
-function register(memberId, password, name, gender, bornYear){
+function register(teamId, password, name){
     const requestOption = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            memberId,
+            teamId,
             password,
-            name,
-            gender,
-            bornYear
+            name
         })
     };
  
-    return fetch(`${apiUrl}/member/register`, requestOption)
+    return fetch(`${apiUrl}/team/register`, requestOption)
         .then(handleResponse);
 }
 
-function login(memberId, password){
+function login(teamId, password){
     const requestOption = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            memberId,
+            teamId,
             password
         })
     };
 
-    return fetch(`${apiUrl}/member/login`, requestOption)
+    return fetch(`${apiUrl}/team/login`, requestOption)
         .then(handleResponse)
         .then((result) => {
-            if(result && result.member){
-                localStorage.setItem(helperConstant.LOCAL_STORATE_KEY, JSON.stringify(result.member));
+            if(result && result.team){
+                localStorage.setItem(helperConstant.LOCAL_STORATE_KEY, JSON.stringify(result.team));
                 return result;
             }
             return Promise.reject(result);

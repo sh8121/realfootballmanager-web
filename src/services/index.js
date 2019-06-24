@@ -1,1 +1,2 @@
-export * from './memberService';
+export * from './playerService';
+export * from './teamService';

@@ -15,7 +15,7 @@ let HomePage = (props) => {
             </div>
             <div className="row justify-content-center">
                 <div className="col-6">
-                    <Link to="/teams" className="btn btn-primary btn-block">팀관리</Link>
+                    <Link to="/team" className="btn btn-primary btn-block">팀관리</Link>
                 </div>
             </div>
         </div>

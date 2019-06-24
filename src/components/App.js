@@ -11,7 +11,17 @@ import '../stylesheets/bootstrap/css/bootstrap.min.css';
 function App(props){
     return (
         <div className="container">
-
+            <div className="row">
+                <div className="col-12">
+                    <Router history={history}>
+                        <PrivateRoute exact path="/" component={HomePage}/>
+                        <Route path="/login" component={LoginPage}/>
+                        <Route path="/register" component={RegisterPage}/>
+                    </Router>       
+                </div>
+            </div>
         </div>
     )
 }
+
+export default App;

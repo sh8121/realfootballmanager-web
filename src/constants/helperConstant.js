@@ -1,3 +1,3 @@
 export default {
-    LOCAL_STORATE_KEY: 'member'
+    LOCAL_STORATE_KEY: 'loginInfo'
 }

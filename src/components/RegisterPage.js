@@ -12,8 +12,7 @@ class RegisterPage extends React.Component {
             memberId: '',
             password: '',
             name: '',
-            gender: 0,
-            bornYear: 1990,
+            memberType: 0,
             submitted: false
         };
 
@@ -27,9 +26,9 @@ class RegisterPage extends React.Component {
             submitted: true
         });
 
-        const { memberId, password, name, gender, bornYear } = this.state;
+        const { memberId, password, name, memberType } = this.state;
         if(memberId && password && name){
-            this.props.onSubmit(memberId, password, name, gender, bornYear);
+            this.props.onSubmit(memberId, password, name, memberType);
         }
     }
 
@@ -41,12 +40,8 @@ class RegisterPage extends React.Component {
     }      
 
     render(){
-        const { memberId, password, name, gender, bornYear, submitted } = this.state;
+        const { memberId, password, name, memberType, submitted } = this.state;
         const { registering } = this.props;
-        const bornYearArr = [];
-        for(let i = 1950; i <= 2000; i++){
-            bornYearArr.push(i);
-        }
 
         return (
             <div>
@@ -71,18 +66,10 @@ class RegisterPage extends React.Component {
                         <small className="form-text">이름를 입력해주세요.</small> }
                     </div>
                     <div className="form-group">
-                        <label htmlFor="gender">성별</label>
-                        <select id="gender" name="gender" value={gender} onChange={this.onChange}>
-                            <option value={0}>남자</option>
-                            <option value={1}>여자</option>
-                        </select>                        
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="bornYear">생년</label>
-                        <select id="bornYear" name="bornYear" value={bornYear} onChange={this.onChange}>
-                            {bornYearArr.map((year)=>(
-                                <option value={year}>{year}</option>
-                            ))}
+                        <label htmlFor="memberType">회원타입</label>
+                        <select id="memberType" name="memberType" value={memberType} onChange={this.onChange}>
+                            <option value={0}>선수</option>
+                            <option value={1}>팀</option>
                         </select>
                     </div>
                     <div className="form-group">
@@ -106,7 +93,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        onSubmit: (memberId, password, name, gender, bornYear) => dispatch(memberAction.register(memberId, password, name, gender, bornYear))
+        onSubmit: (memberId, password, name, memberType) => dispatch(memberAction.register(memberId, password, name, memberType))
     }
 }
 
