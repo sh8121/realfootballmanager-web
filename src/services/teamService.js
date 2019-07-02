@@ -4,7 +4,9 @@ import helperConstant from '../constants/helperConstant';
 export const teamService = {
     register,
     login,
-    logout
+    logout,
+    findPlayers,
+    registerPlayer
 };
 
 function register(teamId, password, name){
@@ -56,16 +58,19 @@ function findPlayers(teamId){
         .then(handleResponse)
 }
 
-function registerPlayer(teamId, playerId){
+function registerPlayer(teamId, playerId, number, position){
     const requestOption = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            playerId
+            playerId,
+            number,
+            position
         })
     };
 
-    return fetch(`${}`)
+    return fetch(`${apiUrl}/team/${teamId}/players`, requestOption)
+        .then(handleResponse)
 }
 
 function handleResponse(response){

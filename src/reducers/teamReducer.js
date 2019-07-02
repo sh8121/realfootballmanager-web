@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 const team = JSON.parse(localStorage.getItem(helperConstant.TEAM_LOGIN_KEY) || '{}');
 const authenticationInitial = team ? { loggedIn: true, team } : {};
 const registrationInitial = {};
+const managementInitial = {};
 
 export const teamReducer = combineReducers({
     authentication,
@@ -43,3 +44,5 @@ function registration(state = registrationInitial, action){
             return state;
     }
 }
+
+

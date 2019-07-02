@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-class PlayerListPage extends React.Component{
+class PlayerManagementPage extends React.Component{
     componentDidMount(){
         
     }
@@ -48,5 +48,5 @@ function mapStateToProps(state){
     };
 }
 
-PlayerListPage = connect(mapStateToProps)(PlayerListPage);
-export default PlayerListPage;
+PlayerManagementPage = connect(mapStateToProps)(PlayerManagementPage);
+export default PlayerManagementPage;
