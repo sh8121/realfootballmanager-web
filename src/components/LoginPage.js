@@ -1,10 +1,15 @@
 import React from 'react';
 import TeamLoginPage from './team/LoginPage';
 import PlayerLoginPage from './player/LoginPage';
+import { playerAction, teamAction } from '../actions';
+import { connect } from 'react-redux';
 
 class LoginPage extends React.Component {
     constructor(props){
         super(props);
+
+        this.props.dispatch(playerAction.logout());
+        this.props.dispatch(teamAction.logout());
 
         this.state = {
             memberType: 0
@@ -33,12 +38,14 @@ class LoginPage extends React.Component {
                         <option value={1}>선수</option>
                     </select>
                 </div>
-                {memberType === 0 ?
+                {memberType == 0 ?
                 <TeamLoginPage/> : <PlayerLoginPage/>} 
             </div>
         );
     }
 }
+
+LoginPage = connect()(LoginPage);
 
 export default LoginPage;
 

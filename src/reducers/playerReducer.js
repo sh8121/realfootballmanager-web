@@ -1,11 +1,17 @@
 import playerConstant from '../constants/playerConstant';
 import helperConstant from '../constants/helperConstant';
+import { combineReducers } from 'redux';
 
 const player = JSON.parse(localStorage.getItem(helperConstant.PLAYER_LOGIN_KEY) || '{}');
 const authenticationInitial = player ? { loggedIn: true, player } : {};
 const registrationInitial = {};
 
-export function authentication(state = authenticationInitial, action){
+export const playerReducer = combineReducers({
+    authentication,
+    registration
+});
+
+function authentication(state = authenticationInitial, action){
     switch(action.type){
         case playerConstant.LOGIN.REQUEST:
             return {
@@ -24,7 +30,7 @@ export function authentication(state = authenticationInitial, action){
     }
 }
 
-export function registration(state = registrationInitial, action){
+function registration(state = registrationInitial, action){
     switch(action.type){
         case playerConstant.REGISTER.REQUEST:
             return {

@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
-import { authentication, registration } from './memberReducer';
+import { playerReducer } from './playerReducer';
+import { teamReducer } from './teamReducer';
 
 export const rootReducer = combineReducers({
-    authentication,
-    registration
+    player: playerReducer,
+    team: teamReducer
 });

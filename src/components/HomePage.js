@@ -1,32 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import helperConstant from '../constants/helperConstant';
 
 
 let HomePage = (props) => {    
-    const { name } = props.member;
-
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col-12">
-                    <h2 style={{"textAlign": "center"}}>{name}님, 환영합니다.</h2>
-                </div>
-            </div>
-            <div className="row justify-content-center">
-                <div className="col-6">
-                    <Link to="/team" className="btn btn-primary btn-block">팀관리</Link>
-                </div>
-            </div>
-        </div>
-    )
+    return localStorage.getItem(helperConstant.PLAYER_LOGIN_KEY) ?
+        <Redirect to={{pathname: '/player', state: {from: props.localtion}}}/> : 
+        <Redirect to={{pathname: '/team', state: {from: props.location}}}/>
 }
 
-function mapStateToProps(state){
-    return {
-        member: state.authentication.member
-    };
-}
-
-HomePage = connect(mapStateToProps)(HomePage);
 export default HomePage;

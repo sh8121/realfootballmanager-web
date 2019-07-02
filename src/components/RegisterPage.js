@@ -1,35 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-import { memberAction } from '../actions'
+import PlayerRegisterPage from './player/RegisterPage';
+import TeamRegisterPage from './team/RegisterPage';
 
 class RegisterPage extends React.Component {
     constructor(props){
         super(props);
 
         this.state = {
-            memberId: '',
-            password: '',
-            name: '',
-            memberType: 0,
-            submitted: false
+            memberType: 0
         };
 
-        this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
-    }
-
-    onSubmit(e){
-        e.preventDefault();
-        this.setState({
-            submitted: true
-        });
-
-        const { memberId, password, name, memberType } = this.state;
-        if(memberId && password && name){
-            this.props.onSubmit(memberId, password, name, memberType);
-        }
     }
 
     onChange(e){
@@ -40,62 +21,23 @@ class RegisterPage extends React.Component {
     }      
 
     render(){
-        const { memberId, password, name, memberType, submitted } = this.state;
-        const { registering } = this.props;
+        const { memberType } = this.state;
 
         return (
             <div>
                 <h2>회원가입</h2>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="memberId">아이디</label>
-                        <input type="text" className="form-control" id="memberId" name="memberId" value={memberId} onChange={this.onChange}/>
-                        { !memberId && submitted &&
-                        <small className="form-text">아이디를 입력해주세요.</small> }
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">비밀번호</label>
-                        <input type="password" className="form-control" id="password" name="password" value={password} onChange={this.onChange}/>
-                        { !password && submitted &&
-                        <small className="form-text">비밀번호를 입력해주세요.</small> }
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="name">이름</label>
-                        <input type="name" className="form-control" id="name" name="name" value={name} onChange={this.onChange}/>
-                        { !name && submitted &&
-                        <small className="form-text">이름를 입력해주세요.</small> }
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="memberType">회원타입</label>
-                        <select id="memberType" name="memberType" value={memberType} onChange={this.onChange}>
-                            <option value={0}>선수</option>
-                            <option value={1}>팀</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <button type="submit" className="btn btn-primary">가입</button>
-                        { registering &&
-                        <img alt="로딩중 이미지" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>}
-                        <Link to="/" className="btn btn-link">취소</Link>
-                    </div>
-                </form>
+                <div className="form-group">
+                    <label htmlFor="memberType">회원타입</label> 
+                    <select id="memberType" name="memberType" value={memberType} onChange={this.onChange}>
+                        <option value={0}>선수</option>
+                        <option value={1}>팀</option>
+                    </select>
+                </div>
+                {memberType == 0 ?
+                <PlayerRegisterPage/> : <TeamRegisterPage/>}
             </div>
         );
     }
 }
 
-function mapStateToProps(state){
-    const { registering } = state.registration;
-    return {
-        registering
-    }
-}
-
-function mapDispatchToProps(dispatch){
-    return {
-        onSubmit: (memberId, password, name, memberType) => dispatch(memberAction.register(memberId, password, name, memberType))
-    }
-}
-
-RegisterPage = connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
 export default RegisterPage;

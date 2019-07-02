@@ -47,6 +47,27 @@ function logout(){
     localStorage.removeItem(helperConstant.TEAM_LOGIN_KEY);
 }
 
+function findPlayers(teamId){
+    const requestOption = {
+        method: 'GET'
+    }
+
+    return fetch(`${apiUrl}/team/${teamId}/players`, requestOption)
+        .then(handleResponse)
+}
+
+function registerPlayer(teamId, playerId){
+    const requestOption = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            playerId
+        })
+    };
+
+    return fetch(`${}`)
+}
+
 function handleResponse(response){
     return response.text().then(
         (text) => {

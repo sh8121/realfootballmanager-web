@@ -7,6 +7,8 @@ import RegisterPage from './RegisterPage';
 import { history } from '../helpers/history';
 
 import '../stylesheets/bootstrap/css/bootstrap.min.css';
+import PlayerRoute from './player/PlayerRoute';
+import TeamRoute from './team/TeamRoute';
 
 function App(props){
     return (
@@ -15,6 +17,8 @@ function App(props){
                 <div className="col-12">
                     <Router history={history}>
                         <PrivateRoute exact path="/" component={HomePage}/>
+                        <PrivateRoute path="/player" component={PlayerRoute}/>
+                        <PrivateRoute path="/team" component={TeamRoute}/>
                         <Route path="/login" component={LoginPage}/>
                         <Route path="/register" component={RegisterPage}/>
                     </Router>       

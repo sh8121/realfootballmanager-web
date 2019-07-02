@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { teamAction } from '../actions';
+import { teamAction } from '../../actions';
 
 class LoginPage extends React.Component {
     constructor(props){
@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
 }
 
 function mapStateToProps(state){
-    const { loggingIn } = state.authentication;
+    const { loggingIn } = state.team.authentication;
 
     return {
         loggingIn
