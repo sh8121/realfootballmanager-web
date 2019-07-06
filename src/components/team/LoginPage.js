@@ -24,7 +24,7 @@ class LoginPage extends React.Component {
         });
         const { teamId, password } = this.state;
         if(teamId && password){
-            this.props.onSubmit(teamId, password);
+            this.props.login(teamId, password);
         }
     }
 
@@ -78,7 +78,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        onSubmit: (teamId, password) => dispatch(teamAction.login(teamId, password))
+        login: (teamId, password) => dispatch(teamAction.login(teamId, password))
     };
 }
 

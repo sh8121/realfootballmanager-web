@@ -44,22 +44,6 @@ function login(teamId, password){
     function failure(){ return { type: teamConstant.LOGIN.FAILURE } }
 }
 
-function findPlayers(teamId){
-    return (dispatch) => {
-        dispatch(request());
-        teamService.findPlayers(teamId)
-            .then(players=>{
-                dispatch(success(players));    
-            },
-            _=>{
-                dispatch(failure());
-            });    
-    }
-    function request(){ return { type: teamConstant.FIND_PLAYERS.REQUEST } }
-    function success(players){ return { type: teamConstant.FIND_PLAYERS.SUCCESS, players } }
-    function failure(){ return { type: teamConstant.FIND_PLAYERS.FAILURE } }
-}
-
 function registerPlayer(teamId, playerId, number, position){
     return (dispatch) => {
         dispatch(request());
@@ -75,6 +59,22 @@ function registerPlayer(teamId, playerId, number, position){
     function request(){ return { type: teamConstant.REGISTER_PLAYER.REQUEST } }
     function success(){ return { type: teamConstant.REGISTER_PLAYER.SUCCESS } }
     function failure(){ return { type: teamConstant.REGISTER_PLAYER.FAILURE } }
+}
+
+function findPlayers(teamId){
+    return (dispatch) => {
+        dispatch(request());
+        teamService.findPlayers(teamId)
+            .then(players=>{
+                dispatch(success(players));    
+            },
+            _=>{
+                dispatch(failure());
+            });    
+    }
+    function request(){ return { type: teamConstant.FIND_PLAYERS.REQUEST } }
+    function success(players){ return { type: teamConstant.FIND_PLAYERS.SUCCESS, players } }
+    function failure(){ return { type: teamConstant.FIND_PLAYERS.FAILURE } }
 }
 
 function logout(){

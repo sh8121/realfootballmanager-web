@@ -29,7 +29,7 @@ class RegisterPage extends React.Component {
 
         const { playerId, password, name, gender, bornYear } = this.state;
         if(playerId && password && name){
-            this.props.onSubmit(playerId, password, name, gender, bornYear);
+            this.props.register(playerId, password, name, gender, bornYear);
         }
     }
 
@@ -105,7 +105,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        onSubmit: (playerId, password, name, gender, bornYear) => dispatch(playerAction.register(playerId, password, name, gender, bornYear))
+        register: (playerId, password, name, gender, bornYear) => dispatch(playerAction.register(playerId, password, name, gender, bornYear))
     }
 }
 

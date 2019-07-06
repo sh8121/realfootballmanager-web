@@ -9,7 +9,8 @@ const managementInitial = {};
 
 export const teamReducer = combineReducers({
     authentication,
-    registration
+    registration,
+    players
 });
 
 function authentication(state = authenticationInitial, action){
@@ -40,6 +41,35 @@ function registration(state = registrationInitial, action){
         case teamConstant.REGISTER.SUCCESS:
         case teamConstant.REGISTER.FAILURE:
             return {};
+        default:
+            return state;
+    }
+}
+
+function players(state = {}, action){
+    switch(action.type){
+        case teamConstant.REGISTER_PLAYER.REQUEST:
+            return Object.assign(state, {
+                registering: true
+            });
+        case teamConstant.REGISTER_PLAYER.SUCCESS:
+        case teamConstant.REGISTER_PLAYER.FAILURE:
+            return Object.assign(state, {
+                registering: false
+            });
+        case teamConstant.FIND_PLAYERS.REQUEST:
+            return Object.assign(state, {
+                finding: true
+            });
+        case teamConstant.FIND_PLAYERS.SUCCESS:
+            return Object.assign(state, {
+                finding: false,
+                players: action.players
+            });
+        case teamConstant.FIND_PLAYERS.FAILURE:
+            return Object.assign(state, {
+                finding: false
+            });
         default:
             return state;
     }

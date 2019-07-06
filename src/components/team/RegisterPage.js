@@ -27,7 +27,7 @@ class RegisterPage extends React.Component {
 
         const { teamId, password, name } = this.state;
         if(teamId && password && name){
-            this.props.onSubmit(teamId, password, name);
+            this.props.register(teamId, password, name);
         }
     }
 
@@ -84,7 +84,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        onSubmit: (teamId, password, name) => dispatch(teamAction.register(teamId, password, name))
+        register: (teamId, password, name) => dispatch(teamAction.register(teamId, password, name))
     }
 }
 

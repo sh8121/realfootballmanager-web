@@ -1,5 +1,6 @@
 import { apiUrl } from '../config';
 import helperConstant from '../constants/helperConstant';
+import { teamAuthHeader } from '../helpers/authHeader';
 
 export const teamService = {
     register,
@@ -12,7 +13,7 @@ export const teamService = {
 function register(teamId, password, name){
     const requestOption = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: teamAuthHeader(),
         body: JSON.stringify({
             teamId,
             password,
@@ -27,7 +28,7 @@ function register(teamId, password, name){
 function login(teamId, password){
     const requestOption = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: teamAuthHeader(),
         body: JSON.stringify({
             teamId,
             password
@@ -49,25 +50,26 @@ function logout(){
     localStorage.removeItem(helperConstant.TEAM_LOGIN_KEY);
 }
 
-function findPlayers(teamId){
-    const requestOption = {
-        method: 'GET'
-    }
-
-    return fetch(`${apiUrl}/team/${teamId}/players`, requestOption)
-        .then(handleResponse)
-}
-
 function registerPlayer(teamId, playerId, number, position){
     const requestOption = {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: teamAuthHeader(),
         body: JSON.stringify({
             playerId,
             number,
             position
         })
     };
+
+    return fetch(`${apiUrl}/team/${teamId}/players`, requestOption)
+        .then(handleResponse)
+}
+
+function findPlayers(teamId){
+    const requestOption = {
+        method: 'GET',
+        headers: teamAuthHeader()
+    }
 
     return fetch(`${apiUrl}/team/${teamId}/players`, requestOption)
         .then(handleResponse)

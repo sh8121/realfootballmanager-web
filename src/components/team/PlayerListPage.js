@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { teamAction } from '../../actions';
 
-class PlayerManagementPage extends React.Component{
+class PlayerListPage extends React.Component{
     componentDidMount(){
-        
+        const { team, findPlayers } = this.props;
+        findPlayers(team.teamId);
     }
 
     render(){
@@ -32,7 +34,7 @@ class PlayerManagementPage extends React.Component{
                         ))}
                     </tbody>
                 </table>
-                <Link to="/players/join" className="btn btn-primary">선수 등록</Link>
+                <Link to="/team/players/register" className="btn btn-primary">선수 등록</Link>
                 <Link to="/" className="btn btn-link">홈으로</Link>
             </div>
         );
@@ -40,13 +42,21 @@ class PlayerManagementPage extends React.Component{
 }
 
 function mapStateToProps(state){
-    const { finding, players } = state.team.finding;
+    const { team } = state.team.authentication;
+    const { finding, players } = state.team.players;
 
     return {
+        team,
         finding,
         players   
     };
 }
 
-PlayerManagementPage = connect(mapStateToProps)(PlayerManagementPage);
-export default PlayerManagementPage;
+function mapDispatchToProps(dispatch){
+    return {
+        findPlayers: (teamId) => dispatch(teamAction.findPlayers(teamId))
+    }
+}
+
+PlayerListPage = connect(mapStateToProps, mapDispatchToProps)(PlayerListPage);
+export default PlayerListPage;
