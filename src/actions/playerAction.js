@@ -4,45 +4,39 @@ import { history } from '../helpers/history';
 
 export const playerAction = {
     register,
-    login,
-    logout
+    findByTeam
 }
 
-function register(playerId, password, name, gender, bornYear){
+function register(teamId, playerId, name, number, position){
     return (dispatch) => {
         dispatch(request());
-        playerService.register(playerId, password, name, gender, bornYear)
+        playerService.register(teamId, playerId, name, number, position)
             .then((_)=>{
                 dispatch(success());
-                history.push('/');                
+                history.push('/player');
             },
             (_)=>{
                 dispatch(failure());
-            })
+            });
     }
+
     function request(){ return { type: playerConstant.REGISTER.REQUEST } }
     function success(){ return { type: playerConstant.REGISTER.SUCCESS } }
     function failure(){ return { type: playerConstant.REGISTER.FAILURE } }
 }
 
-function login(playerId, password){
+function findByTeam(teamId){
     return (dispatch) => {
         dispatch(request());
-        playerService.login(playerId, password)
-            .then((result)=>{
-                dispatch(success(result.player));
-                history.push('/');
+        playerService.findByTeam(teamId)
+            .then(players=>{
+                dispatch(success(players));    
             },
-            (_)=>{
+            _=>{
                 dispatch(failure());
-            });  
+            });    
     }
-    function request(){ return { type: playerConstant.LOGIN.REQUEST } }
-    function success(player){ return { type: playerConstant.LOGIN.SUCCESS, player } }
-    function failure(){ return { type: playerConstant.LOGIN.FAILURE } }
-}
-
-function logout(){
-    playerService.logout();
-    return { type: playerConstant.LOGOUT };
+    function request(){ return { type: playerConstant.FIND_BY_TEAM.REQUEST } }
+    function success(players){ return { type: playerConstant.FIND_BY_TEAM.SUCCESS, players } }
+    function failure(){ return { type: playerConstant.FIND_BY_TEAM.FAILURE } }
 }

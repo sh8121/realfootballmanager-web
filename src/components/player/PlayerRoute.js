@@ -1,14 +1,17 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import HomePage from './HomePage';
-import helperConstant from '../../constants/helperConstant';
+import { Route } from 'react-router-dom';
+import PlayerListPage from './PlayerListPage';
+import PlayerRegisterPage from './PlayerRegisterPage';
 
 function PlayerRoute(props){
-    return localStorage.getItem(helperConstant.PLAYER_LOGIN_KEY) ?
-        (<div>
-                <Route path="/" component={HomePage}/>
-        </div>)
-        : <Redirect to={{pathname: '/team', state: {from: props.location }}} />;
+    const { match } = props;
+
+    return (
+        <div>
+            <Route exact path={match.url} component={PlayerListPage}/>
+            <Route path={`${match.url}/register`} component={PlayerRegisterPage}/>
+        </div>
+    );
 }
 
 export default PlayerRoute;

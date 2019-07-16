@@ -1,0 +1,7 @@
+export default {
+    CREATE: {
+        REQUEST: 'MATCH_CREATE_REQUEST',
+        SUCCESS: 'MATCH_CREATE_SUCCESS',
+        FAILURE: 'MATCH_CREATE_FAILURE'
+    }
+}

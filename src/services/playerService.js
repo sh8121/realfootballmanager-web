@@ -1,52 +1,35 @@
 import { apiUrl } from '../config';
-import helperConstant from '../constants/helperConstant';
+import { authHeader } from '../helpers/authHeader';
 
 export const playerService = {
     register,
-    login,
-    logout
+    findByTeam
 };
 
-function register(playerId, password, name, gender, bornYear){
+function register(teamId, playerId, name, number, position){
     const requestOption = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeader(),
         body: JSON.stringify({
             playerId,
-            password,
             name,
-            gender,
-            bornYear
-        })
-    };
- 
-    return fetch(`${apiUrl}/player/register`, requestOption)
-        .then(handleResponse);
-}
-
-function login(playerId, password){
-    const requestOption = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            playerId,
-            password
+            number,
+            position
         })
     };
 
-    return fetch(`${apiUrl}/player/login`, requestOption)
+    return fetch(`${apiUrl}/teams/${teamId}/players`, requestOption)
         .then(handleResponse)
-        .then((result) => {
-            if(result && result.player){
-                localStorage.setItem(helperConstant.PLAYER_LOGIN_KEY, JSON.stringify(result.player));
-                return result;
-            }
-            return Promise.reject(result);
-        });
 }
 
-function logout(){
-    localStorage.removeItem(helperConstant.PLAYER_LOGIN_KEY);
+function findByTeam(teamId){
+    const requestOption = {
+        method: 'GET',
+        headers: authHeader()
+    }
+
+    return fetch(`${apiUrl}/teams/${teamId}/players`, requestOption)
+        .then(handleResponse)
 }
 
 function handleResponse(response){
