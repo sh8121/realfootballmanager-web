@@ -6,23 +6,26 @@ import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import { history } from '../helpers/history';
 
-import '../stylesheets/bootstrap/css/bootstrap.min.css';
+import '../stylesheets/customized.css';
 import PlayerRoute from './player/PlayerRoute';
+import MatchRecordPage from './match/MatchRecordPage';
+import { Navigation } from './common/Navigation';
 
 function App(props){
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col-12">
-                    <Router history={history}>
+        <Router history={history}>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-12">
                         <PrivateRoute exact path="/" component={HomePage}/>
                         <PrivateRoute path="/player" component={PlayerRoute}/>
+                        <PrivateRoute path="/match" component={MatchRecordPage}/>
                         <Route path="/login" component={LoginPage}/>
                         <Route path="/register" component={RegisterPage}/>
-                    </Router>       
+                    </div>
                 </div>
             </div>
-        </div>
+        </Router>  
     )
 }
 

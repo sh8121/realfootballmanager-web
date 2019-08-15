@@ -1,13 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Draggable from 'react-draggable';
+import { matchAction } from '../../../actions/matchAction';
+import { playerUtil } from '../../../helpers/playerUtil';
 
-export const Player = (props) => {
-    const {player, playerPosition} = props;
-    const {onActivate} = props;
+let Player = (props) => {
+    const {formationNumber, playerPosition, players, activeFormation} = props;
+    const {activateFormation} = props;
+    const player = playerUtil.findPlayerByFormation(players, formationNumber);
 
     return(
         <Draggable>
-            <div className={`player player__item player__item--${playerPosition}`} onClick={()=>{onActivate(player)}}>
+            <div className={`player player__item 
+                ${activeFormation === formationNumber ? 'player__item--focus' : ''} 
+                player__item--${playerPosition}`} onClick={()=>{activateFormation(formationNumber)}}>
                 <div className="player player__item--shirt">
                     {player && player.number}
                 </div>
@@ -18,3 +24,19 @@ export const Player = (props) => {
         </Draggable>
     );
 }
+
+function mapStateToProps(state){
+    return {
+        players: Object.assign([], state.match.newMatch.players),
+        activeFormation: state.match.newMatch.activeFormation
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        activateFormation: (formationNumber) => dispatch(matchAction.activateFormation(formationNumber))
+    }
+}
+
+Player = connect(mapStateToProps, mapDispatchToProps)(Player);
+export {Player};

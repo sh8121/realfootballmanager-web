@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 
 export const playerReducer = combineReducers({
     registration,
+    edit,
     findByTeam
 });
 
@@ -14,6 +15,24 @@ function registration(state = {}, action){
             };
         case playerConstant.REGISTER.SUCCESS:
         case playerConstant.REGISTER.FAILURE:
+            return {};
+        default:
+            return state;
+    }
+}
+
+function edit(state = {}, action){
+    switch(action.type){
+        case playerConstant.EDIT.INIT:
+            return {
+                player: action.player
+            };
+        case playerConstant.EDIT.REQUEST:
+            return {
+                editing: true
+            };
+        case playerConstant.EDIT.SUCCESS:
+        case playerConstant.EDIT.FAILURE:
             return {};
         default:
             return state;

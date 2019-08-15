@@ -4,6 +4,8 @@ import { history } from '../helpers/history';
 
 export const playerAction = {
     register,
+    goToEdit,
+    edit,
     findByTeam
 }
 
@@ -23,6 +25,38 @@ function register(teamId, playerId, name, number, position){
     function request(){ return { type: playerConstant.REGISTER.REQUEST } }
     function success(){ return { type: playerConstant.REGISTER.SUCCESS } }
     function failure(){ return { type: playerConstant.REGISTER.FAILURE } }
+}
+
+function goToEdit(player){
+    return (dispatch) => {
+        dispatch(action());
+        history.push('/player/edit');
+    }
+
+    function action(){
+        return {
+            type: playerConstant.GO_TO_EDIT,
+            player
+        }
+    }
+}
+
+function edit(teamId, playerId, name, number, position){
+    return (dispatch) => {
+        dispatch(request());
+        playerService.edit(teamId, playerId, name, number, position)
+            .then((_)=>{
+                dispatch(success());
+                history.push('/player');
+            },
+            (_)=>{
+                dispatch(failure());
+            });
+    }
+
+    function request(){ return { type: playerConstant.EDIT.REQUEST } }
+    function success(){ return { type: playerConstant.EDIT.SUCCESS } }
+    function failure(){ return { type: playerConstant.EDIT.FAILURE } }
 }
 
 function findByTeam(teamId){

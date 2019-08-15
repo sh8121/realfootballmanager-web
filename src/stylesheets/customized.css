@@ -1,0 +1,18 @@
+.navigation {
+    position: fixed;
+    width: 30vw;
+    height: 100vh;
+    background-color: black;
+    transition: all 1s;
+    z-index: 1;
+}
+.navigation.inactive {
+    left: -30vw;
+}
+.navigation.active {
+    left: 0;
+}
+.navbar-toggler {
+    position: fixed;
+    right: 0;
+}

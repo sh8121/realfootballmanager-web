@@ -2,8 +2,29 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { playerAction } from '../../actions';
+import { playerService } from '../../services';
+import { history } from '../../helpers/history';
 
 class PlayerListPage extends React.Component{
+    constructor(props){
+        super(props);
+        this.onPlayerEdit = this.onPlayerEdit.bind(this);
+        this.onPlayerRemove = this.onPlayerRemove.bind(this);
+    }
+
+    onPlayerEdit(player){
+        this.props.goToEdit(player);
+    }
+
+    onPlayerRemove(player){
+        playerService.remove(player.teamId, player.playerId)
+            .then((_)=>{
+                history.push('/player');
+            },
+            (_)=>{
+            });
+    }
+
     componentDidMount(){
         const { team, findByTeam } = this.props;
         findByTeam(team.teamId);
@@ -34,6 +55,10 @@ class PlayerListPage extends React.Component{
                                 <td>{player.name}</td>
                                 <td>{player.number}</td>
                                 <td>{player.position}</td>
+                                <td>
+                                    <button type="button" className="btn btn-outline-primary" onClick={()=>this.onPlayerEdit(player)}>편집</button>
+                                    <button type="button" className="btn btn-outline-danger" onClick={()=>this.onPlayerRemove(player)}>삭제</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -58,7 +83,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        findByTeam: (teamId) => dispatch(playerAction.findByTeam(teamId))
+        findByTeam: (teamId) => dispatch(playerAction.findByTeam(teamId)),
+        goToEdit: (player) => dispatch(playerAction.goToEdit(player))
     }
 }
 
