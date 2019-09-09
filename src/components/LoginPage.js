@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { teamAction } from '../actions';
+import { rootAction } from '../actions';
+import { teamService } from '../services';
+import { history } from '../helpers/history';
 
 class LoginPage extends React.Component {
     constructor(props){
         super(props);
 
+        teamService.logout();
         this.props.logout();
 
         this.state = {
@@ -26,7 +29,16 @@ class LoginPage extends React.Component {
         });
         const { teamId, password } = this.state;
         if(teamId && password){
-            this.props.login(teamId, password);
+            teamService.login(teamId, password)
+                .then(result=>{
+                    this.props.login(result.team);
+                    alert(result.message);
+                    this.props.initialize(result.team);
+                    history.push('/');
+                },
+                result=>{
+                    alert(result.message);
+                });
         }
     }
 
@@ -39,7 +51,6 @@ class LoginPage extends React.Component {
 
     render(){
         const { teamId, password, submitted } = this.state;
-        const { loggingIn } = this.props;
 
         return (
             <div>
@@ -61,8 +72,6 @@ class LoginPage extends React.Component {
                     </div>
                     <div className="form-group">
                         <button type="submit" className="btn btn-primary">로그인</button>
-                        { loggingIn &&
-                        <img alt="로딩중 이미지" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>}
                         <Link to="/register" className="btn btn-link">회원가입</Link>
                     </div>
                 </form>
@@ -71,21 +80,13 @@ class LoginPage extends React.Component {
     }
 }
 
-function mapStateToProps(state){
-    const { loggingIn } = state.authentication;
-
-    return {
-        loggingIn
-    };
-}
-
 function mapDispatchToProps(dispatch){
     return {
-        login: (teamId, password) => dispatch(teamAction.login(teamId, password)),
-        logout: () => dispatch(teamAction.logout())
+        login: (team) => dispatch(rootAction.login(team)),
+        logout: () => dispatch(rootAction.logout()),
+        initialize: (team) => dispatch(rootAction.initialize(team))
     };
 }
 
-LoginPage = connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+LoginPage = connect(null, mapDispatchToProps)(LoginPage);
 export default LoginPage;
-

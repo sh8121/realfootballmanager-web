@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { matchAction } from '../../../actions/matchAction';
 
 class RecordHistory extends React.Component {
     constructor(props){
@@ -118,20 +116,5 @@ class RecordHistory extends React.Component {
         );
     }
 }
-
-function mapStateToProps(state){
-    return {
-        matchRecord: Object.assign({}, state.match.newMatch.matchRecord),
-        matchHistory: Object.assign([], state.match.newMatch.matchHistory)
-    }
-}
-
-function mapDispatchToProps(dispatch){
-    return {
-        recordDelete: (history, index) => dispatch(matchAction.recordDelete(history, index))
-    }
-}
-
-RecordHistory = connect(mapStateToProps, mapDispatchToProps)(RecordHistory);
 
 export default RecordHistory;

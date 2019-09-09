@@ -1,31 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { playerAction } from '../../actions';
+import { rootAction } from '../../actions';
 import { connect } from 'react-redux';
 import { history } from '../../helpers/history';
+import { playerUtil } from '../../helpers/playerUtil';
+import { playerService } from '../../services';
 
 class PlayerEditPage extends React.Component {
     constructor(props){
         super(props);
 
-        const { playerId, name, number, position } = this.props.player;
-
         this.state = {
-            playerId: playerId,
-            name: name,
-            number: number,
-            position: position    
+            playerId: '',
+            name: '',
+            number: 0,
+            position: 0
         }
 
+        this.syncPlayer = this.syncPlayer.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+    }
+
+    componentDidMount(){
+        this.syncPlayer();
+    }
+
+    componentDidUpdate(){
+        this.syncPlayer();
+    }
+
+    syncPlayer(){
+        if(this.props.players && !this.state.playerId){
+            const player = playerUtil.findPlayerById(this.props.players, this.props.match.params.id);
+            this.setState({
+                playerId: player.playerId,
+                name: player.name,
+                number: player.number,
+                position: player.position
+            });
+        }
     }
 
     onSubmit(e){
         e.preventDefault();
         const { playerId, name, number, position } = this.state;
         const { team } = this.props;
-        this.props.edit(team.teamId, playerId, name, number, position);
+        playerService.edit(team.teamId, playerId, name, number, position)
+            .then(result=>{
+                alert(result.message);
+                this.props.initialize();
+                history.push('/player');
+            },
+            result=>{
+                alert(result.message);
+            });
     }
 
     onChange(e){
@@ -37,7 +66,6 @@ class PlayerEditPage extends React.Component {
 
     render(){
         const { playerId, name, number, position } = this.state;
-        const { editing } = this.props;
         const numberArr = [];
         for(let i = 0; i <= 99; i++){
             numberArr.push(i);
@@ -73,8 +101,6 @@ class PlayerEditPage extends React.Component {
                     </div>
                     <div className="form-group">
                         <button type="submit" className="btn btn-primary">선수편집</button>
-                        { editing &&
-                        <img alt="로딩중 이미지" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>}
                         <Link to="/player" className="btn btn-link">취소</Link>
                     </div>
                 </form>
@@ -84,18 +110,16 @@ class PlayerEditPage extends React.Component {
 }
 
 function mapStateToProps(state){
-    const { team } = state.authentication;
-    const { player, editing } = state.player.edit;
+    const { team, players } = state;
     return {
         team,
-        player,
-        editing
+        players
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
-        edit: (teamId, playerId, name, number, position) => { dispatch(playerAction.edit(teamId, playerId, name, number, position));}
+        initialize: (team) => dispatch(rootAction.initialize(team))
     }
 }
 

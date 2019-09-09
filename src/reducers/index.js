@@ -1,11 +1,19 @@
-import { combineReducers } from 'redux';
-import { playerReducer } from './playerReducer';
-import { matchReducer } from './matchReducer';
-import { authentication, registration } from './teamReducer';
+import stateConstant from '../constants/stateConstant';
+import helperConstant from '../constants/helperConstant';
 
-export const rootReducer = combineReducers({
-    authentication,
-    registration,
-    player: playerReducer,
-    match: matchReducer
-});
+const team = JSON.parse(localStorage.getItem(helperConstant.LOGIN_KEY) || '{}');
+const initialState = team ? { loggedIn: true, team } : {};
+export function rootReducer(state = initialState, action){
+    switch(action.type){
+        case stateConstant.LOGIN:
+            return {...state, loggedIn: true, team: action.team};
+        case stateConstant.LOGOUT:
+            return {};
+        case stateConstant.INIT.PLAYERS:
+            return {...state, players: action.players};
+        case stateConstant.INIT.MATCHES:
+            return {...state, matches: action.matches};
+        default:
+            return state;
+    }
+}

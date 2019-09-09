@@ -1,42 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { playerAction } from '../../actions';
+import { rootAction } from '../../actions';
 import { playerService } from '../../services';
-import { history } from '../../helpers/history';
 
 class PlayerListPage extends React.Component{
     constructor(props){
         super(props);
-        this.onPlayerEdit = this.onPlayerEdit.bind(this);
         this.onPlayerRemove = this.onPlayerRemove.bind(this);
     }
 
-    onPlayerEdit(player){
-        this.props.goToEdit(player);
-    }
-
     onPlayerRemove(player){
+        const { team } = this.props;
         playerService.remove(player.teamId, player.playerId)
-            .then((_)=>{
-                history.push('/player');
+            .then(result=>{
+                alert(result.message);
+                this.props.initialize(team);
             },
-            (_)=>{
+            result=>{
+                alert(result.message);
             });
     }
 
-    componentDidMount(){
-        const { team, findByTeam } = this.props;
-        findByTeam(team.teamId);
-    }
-
     render(){
-        const { finding, players } = this.props;
+        const { players } = this.props;
 
         return (
             <div>
-                { finding && 
-                <img alt="로딩중 이미지" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>}
                 <table className="table table-responsive">
                     <thead>
                         <tr>
@@ -56,7 +46,7 @@ class PlayerListPage extends React.Component{
                                 <td>{player.number}</td>
                                 <td>{player.position}</td>
                                 <td>
-                                    <button type="button" className="btn btn-outline-primary" onClick={()=>this.onPlayerEdit(player)}>편집</button>
+                                    <Link to={`/player/edit/${player.playerId}`} className="btn btn-outline-primary">편집</Link>
                                     <button type="button" className="btn btn-outline-danger" onClick={()=>this.onPlayerRemove(player)}>삭제</button>
                                 </td>
                             </tr>
@@ -71,20 +61,17 @@ class PlayerListPage extends React.Component{
 }
 
 function mapStateToProps(state){
-    const { team } = state.authentication;
-    const { finding, players } = state.player.findByTeam;
+    const { team, players } = state;
 
     return {
         team,
-        finding,
         players   
     };
 }
 
 function mapDispatchToProps(dispatch){
     return {
-        findByTeam: (teamId) => dispatch(playerAction.findByTeam(teamId)),
-        goToEdit: (player) => dispatch(playerAction.goToEdit(player))
+        initialize: (team) => dispatch(rootAction.initialize(team))
     }
 }
 

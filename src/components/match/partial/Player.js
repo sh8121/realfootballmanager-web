@@ -1,7 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Draggable from 'react-draggable';
-import { matchAction } from '../../../actions/matchAction';
 import { playerUtil } from '../../../helpers/playerUtil';
 
 let Player = (props) => {
@@ -25,18 +23,4 @@ let Player = (props) => {
     );
 }
 
-function mapStateToProps(state){
-    return {
-        players: Object.assign([], state.match.newMatch.players),
-        activeFormation: state.match.newMatch.activeFormation
-    }
-}
-
-function mapDispatchToProps(dispatch){
-    return {
-        activateFormation: (formationNumber) => dispatch(matchAction.activateFormation(formationNumber))
-    }
-}
-
-Player = connect(mapStateToProps, mapDispatchToProps)(Player);
 export {Player};

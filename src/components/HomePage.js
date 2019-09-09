@@ -26,7 +26,7 @@ let HomePage = (props) => {
 
 function mapStateToProps(state){
     return {
-        team: state.authentication.team
+        team: state.team
     };
 }
 

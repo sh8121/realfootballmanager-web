@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { playerAction } from '../../actions';
+import { rootAction } from '../../actions';
 import { connect } from 'react-redux';
+import { playerService } from '../../services';
+import { history } from '../../helpers/history';
 
 class PlayerRegisterPage extends React.Component {
     constructor(props){
@@ -28,7 +30,15 @@ class PlayerRegisterPage extends React.Component {
         const { playerId, name, number, position } = this.state;
         const { team } = this.props;
         if(playerId && name){
-            this.props.register(team.teamId, playerId, name, number, position);
+            playerService.register(team.teamId, playerId, name, number, position)
+                .then(result=>{
+                    alert(result.message);
+                    this.props.initialize();
+                    history.push('/player');
+                },
+                result=>{
+                    alert(result.message);
+                });
         }
     }
 
@@ -41,7 +51,6 @@ class PlayerRegisterPage extends React.Component {
 
     render(){
         const { playerId, name, number, position, submitted } = this.state;
-        const { registering } = this.props;
         const numberArr = [];
         for(let i = 0; i <= 99; i++){
             numberArr.push(i);
@@ -81,8 +90,6 @@ class PlayerRegisterPage extends React.Component {
                     </div>
                     <div className="form-group">
                         <button type="submit" className="btn btn-primary">선수등록</button>
-                        { registering &&
-                        <img alt="로딩중 이미지" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>}
                         <Link to="/player" className="btn btn-link">취소</Link>
                     </div>
                 </form>
@@ -92,17 +99,15 @@ class PlayerRegisterPage extends React.Component {
 }
 
 function mapStateToProps(state){
-    const { team } = state.authentication;
-    const { registering } = state.player.registration;
+    const { team } = state;
     return {
-        team,
-        registering
+        team
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
-        register: (teamId, playerId, name, number, position) => { dispatch(playerAction.register(teamId, playerId, name, number, position));}
+        initialize: (team) => dispatch(rootAction.initialize(team))
     }
 }
 

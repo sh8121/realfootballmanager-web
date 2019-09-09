@@ -11,7 +11,7 @@ function PlayerRoute(props){
         <div>
             <Route exact path={match.url} component={PlayerListPage}/>
             <Route path={`${match.url}/register`} component={PlayerRegisterPage}/>
-            <Route path={`${match.url}/edit`} component={PlayerEditPage}/>
+            <Route path={`${match.url}/edit/:id`} component={PlayerEditPage}/>
         </div>
     );
 }

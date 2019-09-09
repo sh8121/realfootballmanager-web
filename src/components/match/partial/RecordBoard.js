@@ -1,12 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { playerUtil } from '../../../helpers/playerUtil';
-import { matchAction } from '../../../actions/matchAction';
 
 class RecordBoard extends React.Component {
     constructor(props){
         super(props);
-
         this.onPlayerChange = this.onPlayerChange.bind(this);
         this.onRecordClick = this.onRecordClick.bind(this);
         this.onRecordHistoryView = this.onRecordHistoryView.bind(this);
@@ -86,21 +83,4 @@ class RecordBoard extends React.Component {
         );
     }
 }
-
-function mapStateToProps(state){
-    return {
-        matchRecord: Object.assign({}, state.match.newMatch.matchRecord),
-        players: Object.assign([], state.match.newMatch.players),
-        activeFormation: state.match.newMatch.activeFormation
-    }
-}
-
-function mapDispatchToProps(dispatch){
-    return {
-        setFormation: (playerId) => dispatch(matchAction.setFormation(playerId)),
-        record: (recordType, playerId) => dispatch(matchAction.record(recordType, playerId))
-    }
-}
-
-RecordBoard = connect(mapStateToProps, mapDispatchToProps)(RecordBoard);
 export default RecordBoard;
