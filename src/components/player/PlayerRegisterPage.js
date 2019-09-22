@@ -13,7 +13,7 @@ class PlayerRegisterPage extends React.Component {
             playerId: '',
             name: '',
             number: 0,
-            position: 0,
+            position: 'GK',
             submitted: false          
         }
 
@@ -33,7 +33,7 @@ class PlayerRegisterPage extends React.Component {
             playerService.register(team.teamId, playerId, name, number, position)
                 .then(result=>{
                     alert(result.message);
-                    this.props.initialize();
+                    this.props.initializePlayers(team);
                     history.push('/player');
                 },
                 result=>{
@@ -107,7 +107,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        initialize: (team) => dispatch(rootAction.initialize(team))
+        initializePlayers: (team) => dispatch(rootAction.initializePlayers(team))
     }
 }
 

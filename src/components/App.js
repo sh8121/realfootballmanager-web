@@ -9,14 +9,15 @@ import { history } from '../helpers/history';
 
 import '../stylesheets/customized.css';
 import PlayerRoute from './player/PlayerRoute';
-import MatchRecordPage from './match/MatchRecordPage';
+import MatchRoute from './match/MatchRoute';
 import { rootAction } from '../actions';
 
 class App extends React.Component{
     componentDidMount(){
         const { team } = this.props;
         if(team){
-            this.props.initialize(team);
+            this.props.initializePlayers(team);
+            this.props.initializeMatches(team);
         }
     }
 
@@ -28,7 +29,7 @@ class App extends React.Component{
                         <div className="col-12">
                             <PrivateRoute exact path="/" component={HomePage}/>
                             <PrivateRoute path="/player" component={PlayerRoute}/>
-                            <PrivateRoute path="/match" component={MatchRecordPage}/>
+                            <PrivateRoute path="/match" component={MatchRoute}/>
                             <Route path="/login" component={LoginPage}/>
                             <Route path="/register" component={RegisterPage}/>
                         </div>
@@ -47,7 +48,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        initialize: (team) => dispatch(rootAction.initialize(team))
+        initializePlayers: (team) => dispatch(rootAction.initializePlayers(team)),
+        initializeMatches: (team) => dispatch(rootAction.initializeMatches(team))
     }
 }
 

@@ -33,7 +33,8 @@ class LoginPage extends React.Component {
                 .then(result=>{
                     this.props.login(result.team);
                     alert(result.message);
-                    this.props.initialize(result.team);
+                    this.props.initializePlayers(result.team);
+                    this.props.initializeMatches(result.team);
                     history.push('/');
                 },
                 result=>{
@@ -84,7 +85,8 @@ function mapDispatchToProps(dispatch){
     return {
         login: (team) => dispatch(rootAction.login(team)),
         logout: () => dispatch(rootAction.logout()),
-        initialize: (team) => dispatch(rootAction.initialize(team))
+        initializePlayers: (team) => dispatch(rootAction.initializePlayers(team)),
+        initializeMatches: (team) => dispatch(rootAction.initializeMatches(team))
     };
 }
 

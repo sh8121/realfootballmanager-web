@@ -54,7 +54,7 @@ class RecordHistory extends React.Component {
                                             </div>
                                             <div className="row">
                                                 <div className="col-8">블락</div>
-                                                <div className="col-4">{matchRecord.block}</div>
+                                                <div className="col-4">{matchRecord.blocks}</div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-8">세이브</div>

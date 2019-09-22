@@ -14,7 +14,7 @@ class PlayerEditPage extends React.Component {
             playerId: '',
             name: '',
             number: 0,
-            position: 0
+            position: 'GK'
         }
 
         this.syncPlayer = this.syncPlayer.bind(this);
@@ -49,7 +49,7 @@ class PlayerEditPage extends React.Component {
         playerService.edit(team.teamId, playerId, name, number, position)
             .then(result=>{
                 alert(result.message);
-                this.props.initialize();
+                this.props.initializePlayers(team);
                 history.push('/player');
             },
             result=>{
@@ -119,7 +119,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        initialize: (team) => dispatch(rootAction.initialize(team))
+        initializePlayers: (team) => dispatch(rootAction.initializePlayers(team))
     }
 }
 

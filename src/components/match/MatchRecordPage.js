@@ -4,6 +4,9 @@ import { Field } from './partial/Field';
 import RecordBoard from './partial/RecordBoard';
 import RecordHistory from './partial/RecordHistory';
 import { playerUtil } from '../../helpers/playerUtil';
+import { matchService } from '../../services/matchService';
+import { history } from '../../helpers/history'
+import { rootAction } from '../../actions';
 
 class MatchRecordPage extends React.Component {
     constructor(props){
@@ -21,7 +24,7 @@ class MatchRecordPage extends React.Component {
                 shotOnTarget: 0,
                 shutOff: 0,
                 clear: 0,
-                block: 0,
+                blocks: 0,
                 save: 0,
                 foul: 0,
                 offside: 0,
@@ -36,6 +39,7 @@ class MatchRecordPage extends React.Component {
             matchHistory: []
         }
 
+        this.save = this.save.bind(this);
         this.syncPlayers = this.syncPlayers.bind(this);
         this.activateFormation = this.activateFormation.bind(this);
         this.setFormation = this.setFormation.bind(this);
@@ -51,6 +55,29 @@ class MatchRecordPage extends React.Component {
         this.syncPlayers();
     }
 
+    save(){
+        const { matchRecord, players } = this.state;
+        const { team } = this.props;
+        matchRecord.teamId = team.teamId;
+        const playerInMatches = [];
+        for(let player of players){
+            playerInMatches.push({
+                teamId: team.teamId,
+                playerId: player.playerId,
+                ...player.matchRecord
+            });
+        }
+        matchService.create(matchRecord, playerInMatches)
+            .then(result => {
+                alert(result.message);
+                this.props.initializeMatches(team);
+                history.push('/match');
+            },
+            result => {
+                alert(result.message);
+            });
+    }
+
     syncPlayers(){
         if(this.props.players && !this.state.players){
             const players = JSON.parse(JSON.stringify(this.props.players));
@@ -62,7 +89,7 @@ class MatchRecordPage extends React.Component {
                     shotOnTarget: 0,
                     shutOff: 0,
                     clear: 0,
-                    block: 0,
+                    blocks: 0,
                     save: 0,
                     foul: 0,
                     offside: 0,
@@ -149,7 +176,8 @@ class MatchRecordPage extends React.Component {
                             players={players}
                             activeFormation={activeFormation}
                             setFormation={this.setFormation}
-                            record={this.record}/>
+                            record={this.record}
+                            save={this.save}/>
                         </div>
                     </div>
                 </div>
@@ -169,7 +197,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        
+        initializeMatches: (team) => dispatch(rootAction.initializeMatches(team))
     }
 }
 

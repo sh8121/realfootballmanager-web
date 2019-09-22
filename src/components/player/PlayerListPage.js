@@ -15,7 +15,7 @@ class PlayerListPage extends React.Component{
         playerService.remove(player.teamId, player.playerId)
             .then(result=>{
                 alert(result.message);
-                this.props.initialize(team);
+                this.props.initializePlayers(team);
             },
             result=>{
                 alert(result.message);
@@ -71,7 +71,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        initialize: (team) => dispatch(rootAction.initialize(team))
+        initializePlayers: (team) => dispatch(rootAction.initializePlayers(team))
     }
 }
 

@@ -1,5 +1,6 @@
 import stateConstant from "../constants/stateConstant";
 import { playerService } from '../services';
+import { matchService } from "../services/matchService";
 
 // export * from './playerAction';
 // export * from './teamAction';
@@ -7,7 +8,8 @@ import { playerService } from '../services';
 export const rootAction = {
     login,
     logout,
-    initialize
+    initializePlayers,
+    initializeMatches
 }
 
 function login(team){
@@ -23,13 +25,25 @@ function logout(){
     }
 }
 
-function initialize(team){
+function initializePlayers(team){
     return (dispatch) => {
         playerService.findByTeam(team.teamId)
             .then(players=>{
                 dispatch({
                     type: stateConstant.INIT.PLAYERS,
                     players,
+                });
+            });
+    }
+}
+
+function initializeMatches(team){
+    return (dispatch) => {
+        matchService.findByTeam(team.teamId)
+            .then(matches=>{
+                dispatch({
+                    type: stateConstant.INIT.MATCHES,
+                    matches
                 });
             });
     }

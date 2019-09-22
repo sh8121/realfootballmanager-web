@@ -2,16 +2,30 @@ import { apiUrl } from '../config';
 import { authHeader } from '../helpers/authHeader';
 
 export const matchService = {
-    create
+    create,
+    findByTeam
 };
 
-function create(matchObj){
+function create(matchObj, playerInMatches){
     const requestOption = {
         method: 'POST',
         headers: authHeader(),
-        body: JSON.stringify(matchObj)
+        body: JSON.stringify({
+            match: matchObj,
+            playerInMatches
+        })
     }
     return fetch(`${apiUrl}/teams/${matchObj.teamId}/matches`, requestOption)
+        .then(handleResponse);
+}
+
+function findByTeam(teamId){
+    const requestOption = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`${apiUrl}/teams/${teamId}/matches`, requestOption)
         .then(handleResponse);
 }
 

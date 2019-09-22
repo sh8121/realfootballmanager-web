@@ -7,6 +7,7 @@ class RecordBoard extends React.Component {
         this.onPlayerChange = this.onPlayerChange.bind(this);
         this.onRecordClick = this.onRecordClick.bind(this);
         this.onRecordHistoryView = this.onRecordHistoryView.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
     onPlayerChange(e){
@@ -28,6 +29,12 @@ class RecordBoard extends React.Component {
         $('#recordHistoryModal').modal('show');
     }
 
+    onSave(){
+        if(window.confirm('경기를 저장하시겠습니까?')){
+            this.props.save();
+        }
+    }
+
     render(){
         const { matchRecord, players, activeFormation } = this.props;
         const activePlayer = playerUtil.findPlayerByFormation(players, activeFormation);
@@ -37,6 +44,7 @@ class RecordBoard extends React.Component {
                 <div className="card-header">
                     <button type="button" className="btn btn-outline-primary" disabled>홈팀({matchRecord.teamScore}) - 상대팀({matchRecord.competitorScore})</button>
                     <button type="button" className="btn btn-secondary" onClick={this.onRecordHistoryView}>경기기록</button>
+                    <button type="button" className="btn btn-danger" onClick={this.onSave}>경기저장</button>
                 </div>
                 <div className="card-body">
                     <ul className="list-group">
@@ -59,7 +67,7 @@ class RecordBoard extends React.Component {
                         <li className="list-group-item">
                             <button type="button" value="shutOff" className="btn btn-outline-primary btn-sm" onClick={this.onRecordClick}>차단</button>
                             <button type="button" value="clear" className="btn btn-outline-primary btn-sm" onClick={this.onRecordClick}>클리어</button>
-                            <button type="button" value="block" className="btn btn-outline-primary btn-sm" onClick={this.onRecordClick}>블락</button>
+                            <button type="button" value="blocks" className="btn btn-outline-primary btn-sm" onClick={this.onRecordClick}>블락</button>
                             <button type="button" value="save" className="btn btn-outline-primary btn-sm" onClick={this.onRecordClick}>세이브</button>
                         </li>
                         <li className="list-group-item">
